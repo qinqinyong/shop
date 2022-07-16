@@ -1,12 +1,10 @@
 <template>
-   <div>
-   <h2><h2/>
-   </div>
+   <div>Footer</div>
 </template>
 
 <script>
 export default {
-  name: '',
+  name: 'Footer',
   data(){
     return {
      
@@ -15,6 +13,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 </style>
