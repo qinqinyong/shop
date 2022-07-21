@@ -27,36 +27,37 @@
     <div class="bottom">
       <h1 class="logoArea">
         <!-- 声明式导航 -->
-       <router-link to="/">
-          <img src="./images/logo.png" alt="" /> 
-       </router-link>
-      
+        <router-link to="/">
+          <img src="./images/logo.png" alt="" />
+        </router-link>
+
       </h1>
       <div class="searchArea">
         <form action="###" class="searchForm">
-          <input   v-model="keyword"   type="text" id="autocomplete" class="input-error input-xxlarge" />
-                  <!-- 编程式导航 -->
-         <button @click.prevent="search"   class="sui-btn btn-xlarge btn-danger">搜索</button>
+          <input v-model="keyword" type="text" id="autocomplete" class="input-error input-xxlarge" />
+          <!-- 编程式导航 -->
+          <button @click.prevent="search" class="sui-btn btn-xlarge btn-danger">搜索</button>
         </form>
       </div>
     </div>
   </header>
 </template>
 
-<script>
 
+
+<script>
 
 export default {
   name: 'Header',
-  methods:{
+  methods: {
 
-    search(){
+    search() {
       const location = {
-         name:'search'
+        name: 'search',
+        query: this.$route.query //将已有的query参数带上
       }
-      if(this.keyword.trim()){
-         location.params={keyword:this.keyword},
-          location.query={keyword2:this.keyword.toUpperCase()}
+      if (this.keyword.trim()) {
+        location.params = { keyword: this.keyword }
       }
 
       // 解决编程式导航重复跳转报错方法1
@@ -64,11 +65,14 @@ export default {
       // 解决编程式导航重复跳转报错方法2
       // this.$router.push(location).catch(()=>{})
       // 解决编程式导航重复跳转报错方法3: 重写push方法
+      this.$router.push(location)
     }
+
+
   },
   data() {
-    return{
-      keyword:''
+    return {
+      keyword: ''
     }
   }
 }

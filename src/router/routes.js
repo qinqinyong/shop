@@ -42,7 +42,7 @@ export default [
                 component:TodyRecommend
             },
             
-        ]
+        ] 
     },
     {
         path: '/Login',

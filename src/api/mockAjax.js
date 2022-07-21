@@ -1,11 +1,5 @@
-/* 
-对axios二次封装
-1. 配置通用的基础路径和超时
-2. 显示请求进度条
-3. 成功返回的数据不再是response, 而直接是响应体数据response.data
-4. 统一处理请求错误, 具体请求也可以选择处理或不处理
-*/
 
+// 模拟数据
 import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -13,7 +7,7 @@ import 'nprogress/nprogress.css'
 
 
 const service = axios.create({
-    baseURL: 'http://gmall-h5-api.atguigu.cn/api',  //基础路径
+    baseURL: '/mock',  //基础路径
     timeout: 5000  //超时时间5秒
 })
 
