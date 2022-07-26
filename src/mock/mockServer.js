@@ -5,6 +5,7 @@ import Mock from 'mockjs'
 import recommends from './recommends.json'
 import floors from './floors.json'
 import banners from './banners.json'
+import  search from './search.json'
 
 
 // 提供今日接口
@@ -16,6 +17,8 @@ Mock.mock('/mock/floors', {code: 200, data: floors})
 
 // 提供广告轮播接口
 Mock.mock('/mock/banners', {code: 200, data: banners})
+
+Mock.mock('/mock/search', {code: 200, data: search})
 
 
 

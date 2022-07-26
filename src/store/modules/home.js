@@ -28,7 +28,7 @@ const mutations = {
 // 接收楼层数据
     REVICE_FLOORLIST(state, floorList) {
         state.floorList = floorList
-    },
+    }, 
 
 
 
@@ -50,7 +50,7 @@ const actions = {
     async getbannerList({ commit }) {
         // 发异步Ajax请求 调用接口请求函数ryList()
         const result = await reqBannerList()
-        console.log(result);
+        // console.log(result);
         //    如果请求成功了，得到的数据提交给mutations
         if (result.code === 200) {
             const bannerList = result.data
@@ -61,7 +61,7 @@ const actions = {
     async getrecommend({ commit }) {
         // 发异步Ajax请求 调用接口请求函数ryList()
         const result = await reqRecommendList()
-        console.log(result);
+        // console.log(result);
         //    如果请求成功了，得到的数据提交给mutations
         if (result.code === 200) {
             const recommendList = result.data
@@ -72,7 +72,7 @@ const actions = {
     async getfloorList({ commit }) {
         // 发异步Ajax请求 调用接口请求函数ryList()
         const result = await reqFloorList()
-        console.log(result);
+        // console.log(result);
         //    如果请求成功了，得到的数据提交给mutations
         if (result.code === 200) {
             const floorList = result.data

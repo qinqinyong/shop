@@ -65,10 +65,25 @@ export default {
       // 解决编程式导航重复跳转报错方法2
       // this.$router.push(location).catch(()=>{})
       // 解决编程式导航重复跳转报错方法3: 重写push方法
-      this.$router.push(location)
+      
+      //从其它页到搜索用push(),从搜索页到搜索页用replace()
+        if (this.$route.name==='search') {
+           this.$router.replace(location)
+        }else{
+          this.$router.push(location)
+        }
     }
 
 
+  },
+  mounted(){
+    // 2.在header组件中绑定事件监听，在回调中清除keyword
+    this.$bus.$on('removeKeyword',()=>{
+       this.keyword=''
+    })
+  },
+  beforeDestroy(){ //4.在header组件死亡之前解绑事件
+    this.$bus.off('removeKeyword')
   },
   data() {
     return {

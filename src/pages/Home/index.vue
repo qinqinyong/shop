@@ -1,12 +1,12 @@
 <template>
   <div>
-   <TypeNav></TypeNav>
-  <ListContainer></ListContainer>
-  <TodayRecommend></TodayRecommend>
-  <Rank></Rank>
-  <Like></Like>
-  <Floor v-for="(floor,index) in floorList"  :key='floor.id' :floor="floor"></Floor>
-  <Band></Band>
+    <TypeNav></TypeNav>
+    <ListContainer></ListContainer>
+    <TodayRecommend></TodayRecommend>
+    <Rank></Rank>
+    <Like></Like>
+    <Floor v-for="(floor, index) in floorList" :key='floor.id' :floor="floor"></Floor>
+    <Band></Band>
   </div>
 
 </template>
@@ -22,14 +22,13 @@ import Band from './Brand'
 
 export default {
   name: 'Home',
-  computed:{
-      ...mapState({
-        recommendList: state => state.home.recommendList,
-        floorList: state => state.home.floorList
-      })
+  computed: {
+    ...mapState({
+      floorList: state => state.home.floorList
+    })
   },
-  mounted(){
-      this.$store.dispatch("getrecommend"),
+  mounted() {
+    this.$store.dispatch("getrecommend"),
       this.$store.dispatch('getfloorList')
   },
   data() {
@@ -37,7 +36,7 @@ export default {
 
     }
   },
-  components:{
+  components: {
     ListContainer,
     TodayRecommend,
     Rank,

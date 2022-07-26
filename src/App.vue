@@ -35,6 +35,7 @@ export default {
     // 分发请求获取轮播图的异步action
     this.$store.dispatch('getbannerList')
 
+    
 
   },
   data() {

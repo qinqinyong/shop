@@ -137,7 +137,17 @@ export default {
           query,
           params: this.$route.params
         }
-        this.$router.push(location)
+
+        //从其它页到搜索用push(),从搜索页到搜索页用replace()
+        if (this.$route.name==='search') {
+           this.$router.replace(location)
+        }else{
+          this.$router.push(location)
+        }
+       
+
+        // 隐藏一级列表
+         this.hiddFirst() 
       }
     }
   },

@@ -29,5 +29,8 @@ VueRouter.prototype.push = function (location, onResolve, onReject) {
 export default new VueRouter({
     // 模式 不带#
     mode: 'history',
-    routes
+    routes,
+    scrollBehavior (to, from, savedPosition) {  //跳转详情页回到最上端
+      return {x:0,y:0}
+    }
 })

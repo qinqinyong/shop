@@ -127,7 +127,7 @@ export default {
        $nextick(callback)
        将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
        */
-     immediate:true,//立即监听
+    //  immediate:true,//立即监听
       handler() {
         this.$nextTick(() => {
           // swiper对象必须在列表显示之后创建才有效果
