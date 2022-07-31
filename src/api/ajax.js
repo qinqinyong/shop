@@ -10,7 +10,7 @@ import axios from 'axios'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-
+import store from '@/store'
 
 const service = axios.create({
     baseURL: 'http://gmall-h5-api.atguigu.cn/api',  //基础路径
@@ -18,16 +18,31 @@ const service = axios.create({
 })
 
 
-// 请求拦截器
+// 
+// 一般在 请求拦截器中只干两件事 1.添加额外功能  2.操作请求头
 service.interceptors.request.use((config) => {
-    NProgress.start()
+
+    NProgress.start()  //添加进度条功能
+
+    // 携带临时标识
+    let userTempId = store.state.users.userTempId
+    if (userTempId) {
+        config.headers.userTempId = userTempId  //操作请求体，带上uuid标识
+    }
+
+    // 携带token
+    let token = store.state.users.token
+    if (token) {
+        config.headers.token = token 
+    }
+  
     // 必须返回config
     return config  //后面就会根据返回的config，使用xhr对象发送Ajax请求
 })
 
 
 // 响应拦截器
-service.interceptors.response.use(
+service.interceptors.response.use( 
     response => {
         NProgress.done()
         return response.data

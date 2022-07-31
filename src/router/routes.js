@@ -4,6 +4,12 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
+import Pay from '@/pages/Pay'
+import Center from '@/pages/Center'
+import PaySuccess from '@/pages/PaySuccess'
 
 
 
@@ -20,7 +26,37 @@ export default [
         
     },
     {
-        path: '/Login',
+        path: '/addcarsuccess',  
+        component: AddCartSuccess,
+        
+    },
+    {
+        path: '/shopcart',  
+        component: ShopCart,
+        
+    }, 
+    {
+        path: '/trade',  
+        component: Trade,
+        
+    }, 
+    {
+        path: '/paysuccess',  
+        component: PaySuccess,
+        
+    }, 
+    {
+        path: '/pay',  
+        component: Pay,
+        
+    }, 
+    {
+        path: '/center',  
+        component: Center,
+        
+    }, 
+    {
+        path: '/login',
         component: Login,
         meta:{
             isHideFooter:true  //设置登录页隐藏底部

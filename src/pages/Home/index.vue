@@ -23,7 +23,8 @@ import Band from './Brand'
 export default {
   name: 'Home',
   computed: {
-    ...mapState({
+    //... ...mapState(['floorList']) 这种方式只能适用于从总的state中取数据，但用了模块化就不能用了
+    ...mapState({  
       floorList: state => state.home.floorList
     })
   },

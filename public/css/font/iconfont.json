@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5712911",
+      "name": "对勾选中",
+      "font_class": "duigouxuanzhong",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
       "icon_id": "4767021",
       "name": "arrowup",
       "font_class": "up",

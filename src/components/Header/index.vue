@@ -5,15 +5,23 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="$store.state.users.userInfo.name">
+            <a href="javascript:;">{{ $store.state.users.userInfo.name }}</a>
+            <a href="javascript:;" class="register" @click="logout">退出登录</a>
+            <!-- <router-link   to="/register">免费注册</router-link> -->
+          </p>
+          <p v-else>
             <span>请</span>
-            <a href="###">登录</a>
-            <a href="###" class="register">免费注册</a>
+            <router-link to="/login">登录</router-link>
+            <!-- <a href="###"></a> -->
+            <router-link class="register" to="/register">免费注册</router-link>
           </p>
         </div>
         <div class="typeList">
-          <a href="###">我的订单</a>
-          <a href="###">我的购物车</a>
+        
+          <router-link to="/center">我的订单</router-link>
+          <router-link to="/shopcart">我的购物车</router-link>
+          <!-- <a href="###"></a> -->
           <a href="###">我的尚品汇</a>
           <a href="###">尚品汇会员</a>
           <a href="###">企业采购</a>
@@ -51,6 +59,7 @@ export default {
   name: 'Header',
   methods: {
 
+    //搜索框按钮
     search() {
       const location = {
         name: 'search',
@@ -65,24 +74,36 @@ export default {
       // 解决编程式导航重复跳转报错方法2
       // this.$router.push(location).catch(()=>{})
       // 解决编程式导航重复跳转报错方法3: 重写push方法
-      
+
       //从其它页到搜索用push(),从搜索页到搜索页用replace()
-        if (this.$route.name==='search') {
-           this.$router.replace(location)
-        }else{
-          this.$router.push(location)
-        }
-    }
+      if (this.$route.name === 'search') {
+        this.$router.replace(location)
+      } else {
+        this.$router.push(location)
+      }
+    },
+
+    // 退出登录
+    async logout() {
+      try {
+        await this.$store.dispatch('userLogout')
+        alert('退出成功')
+        this.$router.push('/')  //退出成功回到首页
+      } catch (error) {
+        alert(error.message)
+      }
+    },
+
 
 
   },
-  mounted(){
+  mounted() {
     // 2.在header组件中绑定事件监听，在回调中清除keyword
-    this.$bus.$on('removeKeyword',()=>{
-       this.keyword=''
+    this.$bus.$on('removeKeyword', () => {
+      this.keyword = ''
     })
   },
-  beforeDestroy(){ //4.在header组件死亡之前解绑事件
+  beforeDestroy() { //4.在header组件死亡之前解绑事件
     this.$bus.off('removeKeyword')
   },
   data() {
