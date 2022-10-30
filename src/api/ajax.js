@@ -24,7 +24,7 @@ service.interceptors.request.use((config) => {
 
     NProgress.start()  //添加进度条功能
 
-    // 携带临时标识
+    // 携带临时标识 获得购物车信息
     let userTempId = store.state.users.userTempId
     if (userTempId) {
         config.headers.userTempId = userTempId  //操作请求体，带上uuid标识
@@ -53,7 +53,7 @@ service.interceptors.response.use(
         // 统一处理一下错误
         alert(error.message || '未知的请求错误')
 
-        return Promise.reject(error)
+        return Promise.reject(error)   //错误传递下去
     }
 )
 

@@ -2,12 +2,13 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import routes from './routes'
-import store from '@/store'
+
+import store from '@/store'  //为了token校验自动登录
 
 Vue.use(VueRouter)
 
 
-// 缓存原本的push方法
+// 缓存原本的push方法  解决当编程式跳转到当前路由且参数数据不变, 就会出警告错误
 const originalPush = VueRouter.prototype.push
 // 指定新的push方法
 VueRouter.prototype.push = function (location, onResolve, onReject) {
@@ -28,14 +29,12 @@ VueRouter.prototype.push = function (location, onResolve, onReject) {
 
 
 const router = new VueRouter({
-  // 模式 不带#
-  mode: 'history',
+  mode: 'history',  // 模式 不带#
   routes,
-  scrollBehavior(to, from, savedPosition) {  //跳转详情页回到最上端
+  scrollBehavior(to, from, savedPosition) {  //解决跳转详情页回到最上端
     return { x: 0, y: 0 }
   }
 })
-
 
 
 // token校验逻辑    全局前置导航守卫
@@ -64,20 +63,21 @@ router.beforeEach(async (to, from, next) => {
           next()   //无条件放行  
         } catch (error) {
           alert('用户的token已过期')
-
           store.dispatch('resetUserInfo')  //失败的话，调用函数清空token和用户信息
-
-          //再重新登录  登录后去之前想去但没去成的地方，需要和登录逻辑配合使用 
-          next('/login?redirect='+to.path)  //query参数
+          //并重新登录  登录后去之前想去但没去成的地方，需要和登录逻辑配合使用 
+          next('/login?redirect=' + to.path)  //query参数
         }
       }
-
     }
-  }else{
+  } else {
     //没有登录过，没有token
+    // 交易相关的  支付相关的 用户中心相关的 都要登录才能访问
+    if (to.path.startsWith('/trade') || to.path.startsWith('/pay') || to.path.startsWith('/center')) {
+      next('/login?redirect=' + to.path)
+    } else {
+      next()
+    }
 
-    // 后期我们需判断用户是不是去订单相关页面，如果是那么就先登录
-    next()  //先自由访问
   }
 
 })

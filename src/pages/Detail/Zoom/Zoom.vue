@@ -23,6 +23,7 @@ export default {
     }
   },
   computed: {
+    // 默认展示第一张图片
     defaultImg() { //在计算中加工数据，解决假的报错
       return this.skuImageList[this.defaultIndex] || {}
     }
@@ -42,7 +43,7 @@ export default {
       let moveX = event.offsetX
       let moveY = event.offsetY
 
-      // 2.计算蒙板的位置  蒙板到边界的距离
+      // 2.计算蒙板的位置  蒙板到边界的距离 offsetWidth 元素的布局宽度
       let mask = this.$refs.mask
       let maskX = moveX - mask.offsetWidth / 2
       let maskY = moveY - mask.offsetHeight / 2

@@ -1,12 +1,11 @@
 //
-import { getUserTempId, getToken, setToken, removeToken,  } from '@/utils/userabout'
+import { getUserTempId, getToken, setToken, removeToken,  } from '@/utils/userabout' //uuid标识id
 import { requserRegister, reqcode, reqlogin ,reqUserInfo ,reqLogout} from '@/api'
 import { get } from 'lodash'
 
 const state = {
-
-    userTempId: getUserTempId(),  //  getUserTempId() 获取临时标识id
-    token: getToken(), //先从localStrange中取
+    userTempId: getUserTempId(),  // getUserTempId() 获取临时标识id 
+    token: getToken(), //先从localStrange中取 
     userInfo: {}   //用户信息
 } 
 
@@ -45,12 +44,12 @@ const actions = {
         console.log(result);
     },
 
-    // 用户登录
+    // 用户登录 保存token
     async userlogin({ commit }, userInfo) {
         const result = await reqlogin(userInfo)
         if (result.code === 200) {
             commit('RECEIVE_TOKEN', result.data.token)
-            setToken(result.data.token)  //保存token
+            setToken(result.data.token)  //保存后端返回token
             return 'ok'
         } else {
             return Promise.reject(new Error('failed'))
@@ -79,7 +78,7 @@ const actions = {
         const result = await reqLogout()
         if (result.code===200) {
             removeToken(), //清空localStorage 当中的token信息
-            commit('RESET_USERINFO')
+            commit('RESET_USERINFO') //清空vuex保存的信息
             return 'ok'
         }else{
             return Promise.reject(new Error('failed'))

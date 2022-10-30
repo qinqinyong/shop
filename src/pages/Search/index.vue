@@ -1,6 +1,7 @@
 <template>
   <div>
     <TypeNav />
+
     <div class="main">
       <div class="py-container">
         <!--bread 面包屑-->
@@ -70,14 +71,17 @@
 
                 <div class="list-wrap">
                   <div class="p-img">
+                    <!-- 路由携带商品id -->
                     <router-link :to="'/detail/'+item.id">
-                      <img :src="item.defaultImg" />
+                    <!-- 图片懒加载 :src 替换为v-lazy-->
+                      <!-- <img :src="item.defaultImg" /> -->
+                      <img v-lazy ="item.defaultImg" />
                     </router-link>
                     <!-- <a href="javascript:"></a> -->
                   </div>
-                  <div class="price">
+                  <div class="price"> 
                     <strong>
-                      <em>¥ </em>
+                      <em>¥ </em> 
                       <i>{{ item.price }}</i>
                     </strong>
                   </div> 
@@ -100,7 +104,11 @@
             </ul>
           </div>
           <!-- 分页 -->
-          <Pagination :currentPage="options.pageNo" :total="total" :pageSize="options.pageSize" :showPageNo="5"
+          <myPagination 
+            :currentPage="options.pageNo" 
+            :total="total" 
+            :pageSize="options.pageSize" 
+            :showPageNo="5"
             @currentChange="currentChange" />
         </div>
       </div>
@@ -131,7 +139,7 @@ export default {
         order: '1:desc', // 排序方式  1: 综合,2: 价格 asc: 升序,desc: 降序  "1:desc"
 
         pageNo: 1, // 页码
-        pageSize: 3, //	每页数量
+        pageSize: 5, //	每页数量
       }
     }
   },
@@ -164,7 +172,7 @@ export default {
 
     // 更新options中的属性属性
     updateParams() {
-      // 取出数据
+      // 从路由信息中取出数据
       const { keyword } = this.$route.params
       const { category1Id, category2Id, category3Id, categoryName } = this.$route.query
       this.options = {
@@ -182,17 +190,18 @@ export default {
       this.$store.dispatch('getproductList', this.options)
     },
 
-    // 删除面包屑Category
+    // 删除面包屑categoryName 三级分类搜索
     removeCategory() {
       //  更新分类数据
       this.options.category1Id = ''
       this.options.category2Id = ''
       this.options.category3Id = ''
       this.options.categoryName = ''
-      // 为了消除地址栏参数信息 应重新指定路由
+      // 删除面包屑的同时，重置路由地址栏参数信息 
       this.$router.replace({
         name: 'search',
-        params: this.$route.params //以前的query参数不要了
+        params: this.$route.params 
+        //以前的query参数不要了
       })
 
     },
@@ -203,8 +212,8 @@ export default {
         name: 'search',
         query: this.$route.query //以前的params参数不要了
       })
-      // 3.在search组件中分发事件
-      this.$bus.$emit('removeKeyword')
+      //删除面包屑的同时，清除head组件搜索框的内容
+      this.$bus.$emit('removeKeyword') // 3.在search组件中分发事件
     },
 
     // 设置品牌条件   通信方式：子相父 自定义事件
@@ -227,7 +236,6 @@ export default {
 
     //添加商品属性条件 通信方式：子相父 自定义事件
     addprops(prop) {
-     
       const {props} = this.options
       // console.log(props);
       // 如果当前商品属性已存在条件中，则直接结束
@@ -248,6 +256,7 @@ export default {
 
     // 设置新的排序项
     setOrder(orderFlag) {
+      // order: '1:desc', // 排序方式  1: 综合,2: 价格 asc: 升序,desc: 降序  
       // 取出原有的标识
       let [flag, type] = this.orderArry
 
@@ -267,15 +276,18 @@ export default {
 
   },
   watch: {
-    $route: { // 对路由变化作出响应...
+    $route: { // 对路由信息变化作出响应...
       handler() {
         this.updateParams()
         this.getShopList()
       },
-      immediate: true //初始化立即执行第一次 不用再created方法中发请求了
+      immediate: true 
+      //问题: 当前已经在搜索页面, 再添加别的搜索条件, 不会再发请求?
+      //原因: 对于关键字搜索和分类搜索 从搜索跳转到搜索, 搜索组件对象不会重新创建, 初始化的勾子不会重新执行 ==> 不会再发请求
+      //初始化立即执行第一次 不用再created方法中发请求了
     }
   }
-  
+
 }
 </script>
 

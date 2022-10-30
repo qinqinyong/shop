@@ -1,4 +1,5 @@
 <template>
+  <!-- 轮播图 -->
   <div class="swiper-container" ref="swiper">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="(skuImage, index) in skuImageList" :key='skuImage.id'>
@@ -8,6 +9,7 @@
     <div class="swiper-button-prev"></div>
     <div class="swiper-button-next"></div>
   </div>
+
 </template>
 
 <script>
@@ -75,10 +77,7 @@ export default {
         padding: 1px;
       }
 
-      // &:hover {
-      //   border: 2px solid #f60;
-      //   padding: 1px;
-      // }
+      
     }
   }
 

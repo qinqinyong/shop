@@ -4,7 +4,7 @@
     <div class="content">
       <h5 class="receive">收件人信息</h5>
       <div class="address clearFix" v-for="(userAddress, index) in userAddressList" :key='userAddress.id'>
-        <!-- 选中的有高亮效果 -->
+        <!-- 用户名选中的有高亮效果 -->
         <span class="username" :class="{ selected: userAddress.isDefault === '1' }">{{ userAddress.consignee }}</span>
         <p @click="changeDefault(userAddress, userAddressList)">
           <span class="s1">{{ userAddress.userAddress }}</span>
@@ -50,7 +50,6 @@
       <div class="bbs">
         <h5>买家留言：</h5>
         <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont" v-model="message"></textarea>
-
       </div>
       <div class="line"></div>
       <div class="bill">
@@ -118,14 +117,15 @@ export default {
 
     // 提交订单逻辑  此处没有使用vueX
     async submitOrder() {
+      // 整理参数
       let traderNo = this.tradeInfo.tradeNo  //交易编号
       let tradeInfo = {  
-        consignee: this.finallyAddress.consignee,
-        consigneeTel: this.finallyAddress.phoneNum,
-        deliveryAddress: this.finallyAddress.userAddress,
-        paymentWay: "ONLINE",
-        orderComment: this.message,
-        orderDetailList: this.detailArrayList
+        consignee: this.finallyAddress.consignee, //收件人姓名
+        consigneeTel: this.finallyAddress.phoneNum, //电话
+        deliveryAddress: this.finallyAddress.userAddress, //地址
+        paymentWay: "ONLINE", //在线支付
+        orderComment: this.message, //留言
+        orderDetailList: this.detailArrayList //存储多个商品对象的数组
       }
 
       try {
@@ -139,17 +139,12 @@ export default {
 
     }
 
-
-
-
-
   },
   computed: {
     ...mapGetters(['userAddressList', 'detailArrayList']),
     ...mapState({
       tradeInfo: state => state.trade.tradeInfo || {}
     }),
-
 
     // 计算最终确定的用户信息，根据上面选定的默认地址
     finallyAddress() {

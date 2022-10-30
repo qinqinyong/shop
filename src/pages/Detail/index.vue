@@ -5,7 +5,7 @@
 
     <!-- 主要内容区域 -->
     <section class="con">
-      <!-- 导航路径区域 -->
+      <!-- 导航路径区域 面包屑-->
       <div class="conPoin">
         <span>{{ categoryView.category1Name }}</span>
         <span>{{ categoryView.category2Name }}</span>
@@ -60,15 +60,15 @@
             </div>
           </div>
 
-          <!-- 选择配置 -->
+          <!-- 销售属性 -->
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
               <dl v-for="(spuSaleAttr, index) in spuSaleAttrList" :key='spuSaleAttr.id'>
                 <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
                 <dd changepirce="0" :class="{ active: spuSaleAttrValue.isChecked === '1' }"
-                  v-for="(spuSaleAttrValue, index) in spuSaleAttr.spuSaleAttrValueList"
-                  @click="setChecked(spuSaleAttrValue, spuSaleAttr.spuSaleAttrValueList)" :key='spuSaleAttrValue.id'>
+                  v-for="(spuSaleAttrValue, index) in spuSaleAttr.spuSaleAttrValueList" :key='spuSaleAttrValue.id'
+                  @click="setChecked(spuSaleAttrValue, spuSaleAttr.spuSaleAttrValueList)" >
                   {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
               </dl>
@@ -350,8 +350,8 @@ export default {
   },
   data() {
     return {
-      skuId: '',
-      skuNum: 1
+      skuId: '',  //路由传参的商品id
+      skuNum: 1   //默认选择商品数量为1
     }
   },
   // 一般都在beforeMount中处理数据，处理完成后后期可以直接使用
@@ -373,7 +373,7 @@ export default {
       this.$store.dispatch('getskuDetailinfo', this.skuId)
     },
 
-    // 选择配置
+    // 选择销售属性配置
     setChecked(spuSaleAttrValue, allspuSaleAttrValue) {
       // 排他法  所有的isChecked属性都置为0，选中的设置为"1''
       allspuSaleAttrValue.forEach(item => {
@@ -388,14 +388,14 @@ export default {
 
       try {
         // 1.接受成功的结果
+        // 携带1个参数以上要以对象反式传递
         const result = await this.$store.dispatch('addOrUpdateCar', { skuId, skuNum })
         alert('添加购物车成功')
 
         // 2.跳转至购物车界面  传递商品数量和商品详情信息
-        
+        // 简单数据可以路由传参，但 skuInfo是对象，不能用query参数携带了
         // localStorage   永久保存数据    setItem getItem  removeItem  clear 
         // sessionStorage  浏览器关闭数据就没了   setItem getItem  removeItem  clear 
-        // 简单数据可以路由传参，但 skuInfo是对象，不能用query参数携带了
         sessionStorage.setItem('SKUINFO_KEY', JSON.stringify(this.skuInfo))
         // 编程式路由跳转  query参数
         this.$router.push('/addcarsuccess?skuNum=' + this.skuNum)
@@ -403,8 +403,6 @@ export default {
       } catch (error) {
         alert(error.message)
       }
-
-
 
     }
 

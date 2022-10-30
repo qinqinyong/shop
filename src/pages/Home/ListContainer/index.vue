@@ -7,7 +7,7 @@
         <div class="swiper-container" ref="swiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(banner, index) in bannerList" :key='banner.id'>
-              <img :src="banner.imageUrl" />
+              <img :src="banner.imageUrl"  />
             </div>
           </div>
           <!-- 如果需要分页器 -->
@@ -113,7 +113,8 @@ export default {
     })
   },
   mounted() {
-
+    // 分发请求获取轮播图的异步action
+    this.$store.dispatch('getbannerList')
   },
   /* 
   在列表数据已经有了, 且已经更新显示了?
@@ -121,49 +122,42 @@ export default {
   watch: 监视bannerList, 就可以知道有数据了
   nextTick: 界面更新后执行回调
   */
+ 
   watch: {
-    bannerList: {// 此时只是数据有了, 但界面还没有更新
+    bannerList() { // 此时只是数据有了, 但界面还没有更新
+      // swiper对象必须在列表显示之后创建才有效果
+
       /* 
-       $nextick(callback)
-       将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
-       */
-    //  immediate:true,//立即监听
-      handler() {
-        this.$nextTick(() => {
-          // swiper对象必须在列表显示之后创建才有效果
-          // new Swiper('.swiper-container', { //会影响到当前页面的其它轮播，因此用ref
-          new Swiper(this.$refs.swiper, {
-            loop: true,
-            autoplay: {
-              delay: 2000,//2秒切换一次
-              disableOnInteraction: false,
-            }, // 循环模式选项
-
-            // 如果需要分页器
-            pagination: {
-              el: '.swiper-pagination',
-              clickable: true,  //点击小圆点切换
-            },
-
-            // 如果需要前进后退按钮
-            navigation: {
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
-            },
-
-
-          })
+      $nextick(callback)
+      将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新。
+      */
+      this.$nextTick(() => { //在此次数据变化导致界面更新完成后执行回调
+        // new Swiper ('.swiper-container', { // 问题: 会影响到当前页面其它的轮播
+        new Swiper(this.$refs.swiper, {
+          // direction: 'horizontal', // 水平切换选项
+          loop: true, // 循环模式选项
+          autoplay: { // 自动轮播
+            delay: 2000,
+            disableOnInteraction: false, // 用户操作后是否停止自动轮播
+          },
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,  //点击小圆点切换
+          },
+          // 如果需要前进后退按钮
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
         })
-      }
+      })
 
-    }
-  },
-  data() {
-    return {
 
     }
   }
-}
+
+};
 </script>
 
 <style lang="less" scoped>
@@ -233,7 +227,7 @@ export default {
           height: 64px;
           text-align: center;
           position: relative;
-          cursor: pointer;
+          cursor: pointer; //小手指
           width: 25%;
 
           .list-item {

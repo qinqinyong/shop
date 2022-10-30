@@ -10,7 +10,7 @@
   </div>
 
 </template>
-
+        
 <script>
 import { mapState } from 'vuex'
 import ListContainer from './ListContainer'
@@ -29,8 +29,8 @@ export default {
     })
   },
   mounted() {
-    this.$store.dispatch("getrecommend"),
-      this.$store.dispatch('getfloorList')
+    // 在这里发送请求获取数据，因为在当前组件需要这数据，通过props方式传递给子组件
+    this.$store.dispatch('getfloorList')
   },
   data() {
     return {

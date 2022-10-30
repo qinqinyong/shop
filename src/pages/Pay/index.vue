@@ -30,12 +30,12 @@
         <div class="step-tit">
           <h5>支付平台</h5>
         </div>
-        <div class="step-cont">
+        <div class="step-cont"> 
           <ul class="payType">
             <li><img src="./images/pay2.jpg"></li>
             <li><img src="./images/pay3.jpg"></li>
           </ul>
-
+ 
         </div>
         <div class="hr"></div>
 
@@ -92,19 +92,21 @@ export default {
       orderId: '',
       payInfo: '',
       payStatus: 0  //设置的支付状态  为了后期用户点击按钮时的判断依据
-
     }
+  },
+  beforeMount() {
+    this.orderId = this.$route.query.orderId
   },
   mounted() {
     this.getPayInfo()
   },
   methods: {
-    async getPayInfo() {
+    async getPayInfo() { 
       const result = await this.$API.reqPayInfo(this.orderId)
       if (result.code === 200) {
         this.payInfo = result.data
       }
-    },
+    }, 
 
     // 支付二维码弹框
     async pay() {
@@ -119,19 +121,19 @@ export default {
           cancelButtonText: '支付遇到问题',
           confirmButtonText: '我已成功支付',
           center: true,
-          // 4.配置按钮逻辑
+          // 4.配置按钮逻辑 
           beforeClose: (action, instance, done) => {
             if (action === 'confirm') {
               // 如果未支付就点击确认按钮，先判断支付状态
-              // if (this.payStatus!==200) {
-              //   this.$message.success('请确保支付成功，支付成功会自动跳转') //绿色提示
-              // } 
+              if (this.payStatus!==200) {
+                this.$message.success('请确保支付成功，支付成功会自动跳转') //绿色提示
+              } 
 
               // 后门
-              clearInterval(this.timer)
-              this.timer = null
-              done()
-              this.$router.push('/paysuccess')
+              // clearInterval(this.timer)
+              // this.timer = null
+              // done()
+              // this.$router.push('/paysuccess')
             
             } else if (action === 'cancel') {
               // 点击取消按钮
@@ -159,7 +161,6 @@ export default {
               this.$router.push('/paysuccess')
             }
           }, 2000)
-
         }
       } catch (err) {
         // 失败了，不须弹出
@@ -167,12 +168,8 @@ export default {
       }
     }
 
-
-
-  },
-  beforeMount() {
-    this.orderId = this.$route.query.orderId
   }
+ 
 }
 </script>
 

@@ -22,7 +22,7 @@
  
 <script>
 export default {
-  name: 'Pagination',
+  name: 'myPagination',
   props: {
     currentPage: { // 当前页码
       type: Number,

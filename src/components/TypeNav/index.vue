@@ -10,38 +10,26 @@
             <div @click="toSearch" class="all-sort-list2">
               <div class="item" v-for="(c1, index) in categoryList" :key='c1.categoryId'
                 :class="{ active: currentIndex === index }" @mouseenter="showSubList(index)">
+                
                 <h3>
-                  <!-- <a   编程式导航    @click="$router.push(`/search?categoryName=${c1.categoryName}&categoryId=${c1.categoryId}`)"   href="javascript:">{{c1.categoryName}}</a> -->
-                  <!-- <router-link :to="`/search?categoryName=${c1.categoryName}&categoryId=${c1.categoryId}`">
-                {{ c1.categoryName }}
-              </router-link> 声明式导航  -->
-                  <a class="category" :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId"
-                    href="javascript:"> {{
-                        c1.categoryName
-                    }}</a>
+                  <!-- <a @click="$router.push(`/search?categoryName=${c1.categoryName}&categoryId=${c1.categoryId}`)"   href="javascript:">{{c1.categoryName}}</a> -->
+                  <!-- <router-link :to="`/search?categoryName=${c1.categoryName}&categoryId=${c1.categoryId}`">{{ c1.categoryName }} </router-link>  -->
+                  <a class="category" :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId"  href="javascript:;"> {{c1.categoryName}}</a>
                 </h3>
-                <div class="item-list clearfix">
+
+                <div class="item-list clearfix"> 
                   <div class="subitem">
                     <dl class="fore" v-for="(c2, index) in c1.categoryChild" :key='c2.categoryId'>
                       <dt>
                         <!-- <a  @click="$router.push(`/search?categoryName=${c2.categoryName}&categoryId=${c2.categoryId}`)"  href="javascript:">  {{ c2.categoryName }}</a> -->
-                        <!-- <router-link :to="`/search?categoryName=${c2.categoryName}&categoryId=${c2.categoryId}`">
-                      {{ c2.categoryName }}
-                    </router-link> -->
-                        <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId" href="javascript:"> {{
-                            c2.categoryName
-                        }}</a>
+                        <!-- <router-link :to="`/search?categoryName=${c2.categoryName}&categoryId=${c2.categoryId}`"> {{ c2.categoryName }} </router-link> -->
+                        <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId" href="javascript:;"> {{c2.categoryName}}</a>
                       </dt>
                       <dd>
                         <em v-for="(c3, index) in c2.categoryChild" :key='c3.categoryId'>
                           <!-- <a  @click="$router.push(`/search?categoryName=${c3.categoryName}&categoryId=${c3.categoryId}`)"  href="javascript:">  {{ c3.categoryName }}</a> -->
-                          <!-- <router-link :to="`/search?categoryName=${c3.categoryName}&categoryId=${c3.categoryId}`">
-                       {{ c3.categoryName }}
-                      </router-link> -->
-                          <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId" href="javascript:">
-                            {{
-                                c3.categoryName
-                            }}</a>
+                          <!-- <router-link :to="`/search?categoryName=${c3.categoryName}&categoryId=${c3.categoryId}`">{{ c3.categoryName }} </router-link> -->
+                          <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId" href="javascript:;">{{c3.categoryName}}</a>
                         </em>
                       </dd>
                     </dl>
@@ -51,8 +39,8 @@
             </div>
           </div>
         </transition>
-
       </div>
+
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -73,8 +61,13 @@ import throttle from 'lodash/throttle'  //按需引入节流函数
 import { mapState } from 'vuex'
 export default {
   name: 'TypeNav',
-  created() { //如果写在mounted里面会导致界面多更新一次
-    // 判断当前路径是否为首页，是的话则显示一级列表
+  created() { 
+    
+    // 分发请求获取分类列表的异步action
+    this.$store.dispatch('getcategoryList')
+    
+    //如果写在mounted里面会导致界面多更新一次
+    // 判断当前路径是否为首页，是的话则展示一级列表内容
     const path = this.$route.path
     if (path === '/') {
       this.isShowFirst = true
@@ -88,39 +81,42 @@ export default {
   },
   methods: {
 
-    // 显示一级列表
+    // 鼠标移入显示一级列表
     showFirst() {
-      this.currentIndex = -1
+      this.currentIndex = -1  //-1: 进入了整个div, 但还没有进入分类项上
       this.isShowFirst = true
     },
 
-    // 隐藏一级列表
+    // 鼠标移出隐藏一级列表
     hiddFirst() {
-      this.currentIndex = -2
+      this.currentIndex = -2  // -2: 出了整个div
+      // 判断防止关闭首页展示的一级列表
       if (this.$route.path !== '/') {
         this.isShowFirst = false
       }
     },
 
 
-    // 显示指定下表的子分类列表    节流函数
+    // 给一级分类列表加上    节流函数
     showSubList: throttle(function (index) {
       //只有当还没离开整个分类的div时才更新下标
       if (this.currentIndex !== -2) {
         this.currentIndex = index
       }
-    }, 200,
-    ),  //最后一次事件延迟200毫秒处理
+    }, 200),  //最后一次事件延迟200毫秒处理
 
+      // 解决快速移出后可能显示第一个分类的子分类列表的bug
+      //设计currentIndex有3种值
+      // -2: 出了整个div
+      // -1: 进入了整个div, 但还没有进入分类项上
+      // >=0: 光标在某个分类项上(只有当不为-2才更新)
 
-    
     // 在这里声明式和编程式导航效率 较低
     //  利用事件的委派切换导航 利用标签自定义属性携带动态数据
     toSearch(event) {
       // 得到事件源标签上的自定义属性   输出的属性名变为小写了！！！
       const { categoryname, category1id, category2id, category3id } = event.target.dataset
-      // console.log(categoryname)
-      // 如果有分类名称, 说明点击的是某个分类项
+      // 如果有分类名称, 说明点击的是某个具体的分类项
       if (categoryname) {
         // 准备query参数
         const query = { categoryName: categoryname }
@@ -139,17 +135,18 @@ export default {
         }
 
         //从其它页到搜索用push(),从搜索页到搜索页用replace()
-        if (this.$route.name==='search') {
-           this.$router.replace(location)
-        }else{
+        if (this.$route.name === 'search') {
+          this.$router.replace(location)
+        } else {
           this.$router.push(location)
         }
-       
 
         // 隐藏一级列表
-         this.hiddFirst() 
+        this.hiddFirst()
       }
     }
+
+
   },
   computed: {
     // 方法一 $store.state读取数据
@@ -292,9 +289,7 @@ export default {
 
           &.active {
             background-color: skyblue;
-
             .item-list {
-
               display: block;
             }
           }

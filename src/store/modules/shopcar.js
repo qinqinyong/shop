@@ -39,7 +39,8 @@ const actions = {  //携带多个参数必需以对象方式传递
     async updatecheckAll({ state, dispatch }, isChecked) {
         let promises = []
         state.shopCarList[0].cartInfoList.forEach(item => {
-            if (item.isChecked === isChecked) return
+            if (item.isChecked === isChecked) return  //保持每个商品框的状态和总框一致
+            // 当每个商品框都选中时，总框选中
             let promise = dispatch('updatecheck', { skuId: item.skuId, isChecked: isChecked })
             promises.push(promise)
         });
@@ -71,9 +72,6 @@ const actions = {  //携带多个参数必需以对象方式传递
         })
         return Promise.all(promises)
     }
-
-
-
 
 }
 

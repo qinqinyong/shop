@@ -12,7 +12,7 @@
               <a href="##" class="current">账户登录</a>
             </li>
           </ul>
-
+ 
           <div class="content">
             <form action="##">
               <div class="input-text clearFix">

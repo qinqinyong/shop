@@ -18,7 +18,7 @@
           </p>
         </div>
         <div class="typeList">
-        
+        <!-- 声明式导航 -->
           <router-link to="/center">我的订单</router-link>
           <router-link to="/shopcart">我的购物车</router-link>
           <!-- <a href="###"></a> -->
@@ -38,15 +38,17 @@
         <router-link to="/">
           <img src="./images/logo.png" alt="" />
         </router-link>
-
       </h1>
+      <!-- 搜索框 -->
       <div class="searchArea">
         <form action="###" class="searchForm">
           <input v-model="keyword" type="text" id="autocomplete" class="input-error input-xxlarge" />
-          <!-- 编程式导航 -->
+          <!-- 编程式导航  -->
           <button @click.prevent="search" class="sui-btn btn-xlarge btn-danger">搜索</button>
+          <!-- 阻止表单提交的默认行为: .prevent,不加会导致路径出现### -->
+          <!-- <button @click="search" class="sui-btn btn-xlarge btn-danger">搜索</button> -->
         </form>
-      </div>
+      </div> 
     </div>
   </header>
 </template>
@@ -54,7 +56,6 @@
 
 
 <script>
-
 export default {
   name: 'Header',
   methods: {
@@ -65,7 +66,7 @@ export default {
         name: 'search',
         query: this.$route.query //将已有的query参数带上
       }
-      if (this.keyword.trim()) {
+      if (this.keyword.trim()) { //去除搜索框空格
         location.params = { keyword: this.keyword }
       }
 
@@ -93,9 +94,6 @@ export default {
         alert(error.message)
       }
     },
-
-
-
   },
   mounted() {
     // 2.在header组件中绑定事件监听，在回调中清除keyword
@@ -103,12 +101,12 @@ export default {
       this.keyword = ''
     })
   },
-  beforeDestroy() { //4.在header组件死亡之前解绑事件
+  beforeDestroy() { //4.在header组件死亡之前解绑事件  //防止内存泄露溢出
     this.$bus.off('removeKeyword')
   },
   data() {
     return {
-      keyword: ''
+      keyword: '',
     }
   }
 }

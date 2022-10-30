@@ -1,5 +1,6 @@
+// element-ui插件
 import Vue from 'vue';
-import { MessageBox, Message} from 'element-ui';
+import { MessageBox, Message,Pagination} from 'element-ui';
 
 
 Vue.prototype.$msgbox = MessageBox;
@@ -7,3 +8,5 @@ Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$message = Message;
+
+Vue.use(Pagination) //分页器

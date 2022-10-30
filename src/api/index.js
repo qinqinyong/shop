@@ -55,7 +55,7 @@ export const requserRegister = (userInfo)=>{
   return ajax({
     url:'/user/passport/register',
     method:'post',
-    data:userInfo   //请求体参数 phone password  code  放入一个对象中
+    data:userInfo   //请求体参数 phone password  code验证码  放入一个对象中
   })
 }
 
@@ -67,7 +67,7 @@ export const reqcode = (phone)=>{
   })
 }
 
-// 用户登录 /api/user/passport/login
+// 用户登录 /api/user/passport/login  userInfo：{ phone, password }
 
 export const reqlogin = (userInfo)=>{
   return ajax({
@@ -131,7 +131,14 @@ export const reqPayStatus = (orderId)=>{
 }
 
 
+// 获取订单列表    /api/order/auth/{page}/{limit} 页码和每页显示数量
 
+export const myOrderInfo = (page,limit)=>{
+  return ajax({
+    url:`/order/auth/${page}/${limit}`,
+    method:'get'
+  })
+}
 
 
 

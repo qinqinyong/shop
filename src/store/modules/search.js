@@ -17,8 +17,9 @@ const actions = {
     async getproductList({ commit }, searchParams) {
 
         // 点击链接时可能有的参数没有选取，为空，所以向后台请求数据前，
-        //  去掉searchParams中的空数组或空串，减轻请求负担
-        searchParams = {...searchParams}  // 因为不想删除search组件中的options中的属性 浅拷贝
+        // 去掉searchParams中的空数组或空串，减轻请求负担
+        // 因为不想删除search组件中的options中的属性 浅拷贝
+        searchParams = {...searchParams}  
         Object.keys(searchParams).forEach((key) => {
             if (searchParams[key] === '' || (Array.isArray(searchParams[key]) && searchParams[key].length === 0)) {
                 delete searchParams[key]
@@ -27,14 +28,11 @@ const actions = {
 
         // 发ajax请求
         const result = await reqSearch(searchParams)
-        // console.log(result);
         if (result.code === 200) {
             const productList = result.data
             commit("REVICE_PRODUCTLIST", productList)
         }
-
     }
-
 
 }
 

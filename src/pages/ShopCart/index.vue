@@ -85,8 +85,8 @@ export default {
 
     // 更改数量发请求   把数量的改变值disNum传给后台  若为正值则在原有上加disNum ，负值则减disNum  并返回数据给前台
     async changeCartNum(cartInfo, disNum, flag) {
-      // 根据标识判断直接修改input值
-      if (!flag) {
+      // 根据标识判断直接修改input值    
+      if (!flag) { //进入判断表明在input框里修改
         if (disNum > 0) {
           disNum = disNum - cartInfo.skuNum
         } else {
@@ -121,7 +121,7 @@ export default {
       }
     },
 
-    // 删除商品
+    // 删除某个商品
     async deleateCarOne(cartInfo) {
       try {
         await this.$store.dispatch('deleteCar', cartInfo.skuId)
@@ -175,10 +175,12 @@ export default {
 
     // 全选
     isAllCheck: {
+      // 当选中全选按钮时，选中所有商品
       get() {        //数组的every方法 遍历所有数组
-        return this.cartInfoList.every((item) => item.isChecked)
+        return this.cartInfoList.every((item) => item.isChecked) && this.cartInfoList.length>0
       },
 
+      
       async set(val) {  //val实际拿的是布尔值，参数需要数字
         // this.$store.dispatch('updatecheckAll',val?1:0) 是调用updatecheckAll异步函数
         // 它的结果拿的是异步函数的返回值 固定的那个promise，不是函数return后面Promise.all的返回值promise
@@ -193,10 +195,7 @@ export default {
       }
     }
 
-
-
   }
-
 
 }
 </script>    

@@ -50,7 +50,6 @@ const actions = {
     async getbannerList({ commit }) {
         // 发异步Ajax请求 调用接口请求函数ryList()
         const result = await reqBannerList()
-        // console.log(result);
         //    如果请求成功了，得到的数据提交给mutations
         if (result.code === 200) {
             const bannerList = result.data

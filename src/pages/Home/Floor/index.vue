@@ -21,6 +21,7 @@
               </ul>
               <img :src="floor.imgUrl" />
             </div>
+            <!-- 轮播图 -->
             <div class="floorBanner">
               <div class="swiper-container"  ref="swiper">
                 <div class="swiper-wrapper">
@@ -36,6 +37,7 @@
                 <div class="swiper-button-next"></div>
               </div>
             </div>
+            
             <div class="split">
               <span class="floor-x-line"></span>
               <div class="floor-conver-pit">
@@ -71,7 +73,6 @@ export default {
   props: ['floor'],
   data() {
     return {  
-
     }
   },
   mounted() {

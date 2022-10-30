@@ -23,8 +23,10 @@ export default {
     name: 'TodayRecommend',
     data() {
         return {
-
         }
+    },
+    mounted(){
+         this.$store.dispatch("getrecommend")
     },
     computed: {
         ...mapState({
