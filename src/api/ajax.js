@@ -5,8 +5,8 @@
 3. 成功返回的数据不再是response, 而直接是响应体数据response.data
 4. 统一处理请求错误, 具体请求也可以选择处理或不处理
 */
-
-import axios from 'axios'
+ 
+import axios from 'axios' 
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
